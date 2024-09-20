@@ -1,0 +1,73 @@
+* Hashtable Library
+
+A simple hashtable library for C.
+
+** Usage
+*** Initialize the hashtable
+
+Create a pointer that points to the return value of the function hashtable_init as follows:
+
+#+begin_src C
+HASHTABLE *t = hashtable_init(10); 
+#+end_src
+
+Number 10 represents the size of the hashmap.
+
+*** Insert data
+
+You can insert data into the hastable using the hashtable_insert function. It takes three peramiters:
+
+- Key
+- Value (Can be any type) 
+- Pointer to the hashtable
+
+#+begin_src C
+hashtable_insert("hello", "Hello World", t);
+hashtable_insert("number", 12, t);
+#+end_src
+
+This function will return *true* if it was able to insert the data into the hashtable, otherwise returns *false*.
+
+*** Find data
+
+You can get data from the hashtable by using the hashtable_find function. It takes two perimeters:
+
+- Key
+- Pointer to the hashtable
+
+#+begin_src C
+  char *value = hashtable_find("hello", t);
+  printf("%s\n", value);
+#+end_src
+
+This function will return the value if found, otherwise returns *NULL*.
+
+*** Delete data
+
+You can delete data from the hashtable by using hashtable_delete function. it takes 2 peramiters:
+
+- Key
+- Pointer to the hashtable
+
+#+begin_src C
+hashtable_delete("hello", t);
+#+end_src
+
+This function will return *true* if it was able to delete the data successfully.
+
+*** Free the hashtable pointer
+
+Once you're done free the hashtable pointer.
+
+#+begin_src C
+free(t);
+#+end_src
+
+** Installation
+
+You can install the library by running the following commands:
+
+#+begin_src bash
+make
+sudo make install
+#+end_src
