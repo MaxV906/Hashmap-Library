@@ -6,10 +6,11 @@
 #include <stdbool.h>
 #include <string.h>
 
-typedef struct {
+typedef struct map_data {
 
   char *key;
   void *data;
+  struct map_data *next;
 
 } MAP_DATA;  
 
@@ -25,5 +26,6 @@ HASHTABLE *hashtable_init(unsigned int size);
 bool hashtable_insert(char *key, void *data, HASHTABLE *hashtable);
 bool hashtable_delete(char *key, HASHTABLE *hashtable);
 void *hashtable_find(char *key, HASHTABLE *hashtable);
+void hashtable_free(HASHTABLE *hashtable);
 
 #endif

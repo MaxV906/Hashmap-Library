@@ -3,10 +3,11 @@
 #include <stdbool.h>
 #include <string.h>
 
-typedef struct {
+typedef struct map_data {
 
   char *key;
   void *data;
+  struct map_data *next;
 
 } MAP_DATA;  
 
@@ -49,12 +50,26 @@ bool hashtable_insert(char *key, void *data, HASHTABLE *hashtable) {
   unsigned int hash_value = hash(key, hashtable->size);
 
   if (hashtable == NULL) return false;
-  if (hashtable->table[hash_value].data) return false;
+  
+  MAP_DATA *curr = &hashtable->table[hash_value];
 
-  hashtable->table[hash_value].key = key;
-  hashtable->table[hash_value].data = data;
+  while (true) {
 
-  return true;
+    if (!curr->next) curr->next = malloc(sizeof(MAP_DATA));
+
+    if (!curr->key && !curr->data) {
+
+      curr->key = key;
+      curr->data = data;
+
+      return true;
+
+    }
+
+    curr = curr->next;
+  }
+
+  return false;
 
 }
 
@@ -64,10 +79,28 @@ bool hashtable_delete(char *key, HASHTABLE *hashtable) {
 
   if (hashtable == NULL) return false;
 
-  hashtable->table[hash_value].key = NULL;
-  hashtable->table[hash_value].data = NULL;
+  MAP_DATA *curr = &hashtable->table[hash_value];
+  
+  while (curr) {
 
-  return true;
+    if (curr->key) {
+
+      if (!strcmp(key, curr->key)) {
+
+        curr->data = NULL;
+        curr->key = NULL;
+
+        return true;
+
+      }
+
+    }
+
+    curr = curr->next;
+
+  }
+
+  return false;
 
 }
 
@@ -77,6 +110,40 @@ void *hashtable_find(char *key, HASHTABLE *hashtable) {
 
   if (hashtable == NULL) return NULL;
 
-  return hashtable->table[hash_value].data;
+  MAP_DATA *curr = &hashtable->table[hash_value];
+
+  while (curr) {
+
+    if (!strcmp(key, curr->key)) return curr->data;
+    curr = curr->next;
+
+  }
+
+  return NULL;
+
+}
+
+void hashtable_free(HASHTABLE *hashtable) {
+
+  if (!hashtable) return;
+
+  for (int i = 0; i < hashtable->size; i++) {
+
+    MAP_DATA *curr = hashtable->table[i].next;
+    MAP_DATA *next = NULL;
+
+    while (curr) {
+
+      next = curr->next;
+
+      free(curr);
+      curr = next;
+
+    }
+
+  }
+
+  free(hashtable->table);
+  free(hashtable);
 
 }
