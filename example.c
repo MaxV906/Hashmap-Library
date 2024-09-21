@@ -4,18 +4,21 @@
 
 int main() {
 
-  HASHTABLE *t = hashtable_init(10);
+  HASHTABLE *t = hashtable_init(40);
 
-  if (!hashtable_insert("hello", "Hello World!", t)) {
-
-    fprintf(stderr, "Failed to insert new data\n");
-    return 1;
-
-  }
+  hashtable_insert("hello", "Hello World", t);
+  hashtable_insert("test", "Testing", t);
+  hashtable_insert("number", (int *) 17, t);
 
   printf("Data stored in key <hello> is: %s\n", hashtable_find("hello", t));
+  printf("Data stored in key <test> is: %s\n", hashtable_find("test", t));
+  printf("Data stored in key <number> is: %d\n", hashtable_find("number", t));
 
-  free(t);
+  hashtable_delete("hello", t);
+  hashtable_delete("test", t);
+  hashtable_delete("number", t);
+
+  hashtable_free(t);
 
   return 0;
 
