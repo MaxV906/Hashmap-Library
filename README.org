@@ -2,6 +2,14 @@
 
 A simple hashtable library for C.
 
+** Installation
+
+You can install the library by running the following commands:
+
+#+begin_src bash
+make
+sudo make install
+#+end_src
 ** Usage
 *** Initialize the hashtable
 
@@ -60,14 +68,12 @@ This function will return *true* if it was able to delete the data successfully.
 Once you're done free the hashtable pointer.
 
 #+begin_src C
-free(t);
+hashtable_free(t);
 #+end_src
 
-** Installation
+*** Post install
 
-You can install the library by running the following commands:
-
-#+begin_src bash
-make
-sudo make install
+After installing the shared library, include the hashtable.h header file into your project and compile with flag -lhashtable as follows:
+#+begin_src shell
+gcc project.c -lhashtable
 #+end_src
